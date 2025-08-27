@@ -276,6 +276,7 @@ footer{
     letter-spacing: 0%;
     vertical-align: middle;
     color: #000000;
+    cursor: pointer;
 }
 .filter-group {
     margin-bottom: 24px;
