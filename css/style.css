@@ -225,13 +225,13 @@ footer{
     flex-direction: row;
     column-gap: 32px;
     justify-content: center;
-    align-items: stretch;
+    align-items: flex-start;
 }
 .sidebar {
     width: 224px;
     background: #1E293B;
     border-radius: 12px;
-    padding: 24px;
+    padding: 30px 24px;
     color: #fff;
     box-shadow: 0 2px 8px 0 #00000022;
 }
@@ -262,6 +262,34 @@ footer{
     display: block;
     margin-bottom: 8px;
 }
+.genre-filter{
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #374151;
+    background: #1E293B;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    position: relative;
+    transition: background .15s, border-color .15s;
+}
+.genre-filter:checked{
+    background: #8B5CF6;
+    border-color: #8B5CF6;
+}
+.genre-filter:checked::after{
+    content: "";    
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 8px; 
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+}
 .movie_year_filter{
     width: 100%;
     border-radius: 6px;
@@ -282,6 +310,11 @@ footer{
     margin-bottom: 24px;
     padding-bottom: 34px;
     border-bottom: 1px solid #E5E7EB;
+}
+.filter-option{
+    display: flex;
+    align-items: center;
+    margin-block: 12px;
 }
 .sidebar input[type="checkbox"] {
     margin-right: 6px;
@@ -304,8 +337,13 @@ footer{
     text-align: center;
     color: #FFFFFF;
     border: none;
-    background: none;
     cursor: pointer;
+    background: none;
+    display: block;
+    margin: 16px auto 0;
+}
+.apply_btn:hover{
+    text-decoration: underline;
 }
 .movies_grid{
     display: grid;
@@ -356,4 +394,48 @@ footer{
     letter-spacing: 0%;
     color: #9CA3AF;
 }
-
+.popular_movies{
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px
+}
+.popular_movie_card{
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 6px;
+}
+.popular_movie_card:hover{
+    background-color: #374151;
+}
+.popular_movie_img{
+    width: 64px;
+    border-radius: 6px;
+}
+.popular_card_content{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 0;
+}
+.popular_movie_name{
+    font-family: Inter;
+    font-weight: 600;
+    font-style: Semi Bold;
+    font-size: 16px;
+    line-height: 20.8px;
+    letter-spacing: 0%;
+    color: #FFFFFF;
+}
+.popular_movie_year{
+    font-family: Inter;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    color: #9CA3AF;
+}
