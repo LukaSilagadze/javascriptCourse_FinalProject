@@ -1,3 +1,22 @@
+/* Fixed header styles for scroll effect */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #000;
+    color: #fff;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.3s, color 0.3s;
+}
+.fixed-header .header_h1,
+.fixed-header .header_a,
+.fixed-header .header_ul li,
+.fixed-header nav,
+.fixed-header .header_nav {
+    color: #fff !important;
+}
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 
@@ -10,6 +29,7 @@
 header{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 18px 33px;
     background-color: #0F172A;
 }
