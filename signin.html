@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="shortcut icon" href="./images/icon.png" type="image/x-icon">
-    <title>Sign in</title>
+    <title>Sign In | FinalMovies</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- header -->
+
+    <!-- HEADER -->
     <header>
         <a href="./index.html"><h1 class="header_h1">FinalMovies</h1></a>
         <nav class="header_nav">
@@ -22,9 +23,36 @@
                 <li><a href="./movies.html" class="header_a">Movies</a></li>
                 <li><a href="./aboutus.html" class="header_a">About Us</a></li>
                 <li><a href="./contact.html" class="header_a">Contact</a></li>
-                <li><a href="./signin.html" class="header_a log_in">Log in</a></li>
             </ul>
         </nav>
     </header>
+
+    <!-- MAIN SIGN IN FORM -->
+    <main class="signin_main">
+        <div class="signin_box">
+            <h2 class="signin_title">Sign In</h2>
+
+            <form action="#" method="post" class="signin_form">
+                <input type="email" placeholder="Email" class="signin_input" required>
+                <input type="password" placeholder="Password" class="signin_input" required>
+                <button type="submit" class="signin_btn">Log In</button>
+            </form>
+
+            <p class="signin_text">
+                Don’t have an account? <a href="./signup.html" class="signin_link">Sign Up!</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer_p">&copy; 2025 FinalMovies. All rights reserved.</p>
+        <ul class="footer_ul">
+            <li><a href="#" class="footer_a">Privacy Policy</a></li>
+            <li><a href="#" class="footer_a">Terms of Service</a></li>
+            <li><a href="./contact.html" class="footer_a">Contact Us</a></li>
+        </ul>
+    </footer>
+
 </body>
 </html>
