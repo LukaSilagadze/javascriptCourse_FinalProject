@@ -602,6 +602,17 @@ footer{
     letter-spacing: 0%;
     color: #9CA3AF;
 }
+.movie_error_handler{
+    font-family: Inter;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0%;
+    color: #9CA3AF;
+    text-align: center;
+    padding: 20px;
+}
 /* About us */
 .main_section_aboutUs{
     background-color: #020617;

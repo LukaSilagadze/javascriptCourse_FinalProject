@@ -1,3 +1,30 @@
+// Auto Slider
+let slideIndex = 1;
+autoSlider();
+function autoSlider() {
+    let slides = document.getElementsByClassName("myPictures");
+    let dots = document.getElementsByClassName("dot");
+    let i;
+
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" activeDot", "")
+    }
+
+    slideIndex = slideIndex + 1;
+
+    if (slideIndex > slides.length) {
+        slideIndex = 1;
+    };
+
+    slides[slideIndex-1].style.display = "block";
+    dots[slideIndex-1].className += " activeDot";
+
+    setTimeout(autoSlider, 2000); // ფუნქციის რეკურსიული გამოძახება
+}
 // load movies
 function loadMovies(movies){
     const movieList = document.getElementById("movies_grid");
@@ -206,15 +233,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // Sign in
     if(signupForm){
-        signupForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        signupForm.addEventListener('submit', (event) => {
+            event.preventDefault();
             registerUser();
         });
     }
     // Sign up
     if(signinForm){
-        signinForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        signinForm.addEventListener('submit', (event) => {
+            event.preventDefault();
             login();
         });
     }
@@ -227,4 +254,16 @@ fetch("movies.json")
         allMovies = movies;
         loadMovies(movies)
     })
-    // .catch(error => alert("Movies couldn't load."))
+    .catch(error => {
+        const moviesGrid = document.getElementById("movies_grid");
+        const popularMovies = document.getElementById("popular_movies");
+        if(moviesGrid){
+            moviesGrid.style.display = "flex";
+            moviesGrid.style.justifyContent = "center";
+            moviesGrid.style.alignItems = "center";
+            moviesGrid.innerHTML = `<div class="movie_error_handler"> Movies couldn't load :((( womp womp</div>`;
+        }
+        if(popularMovies){
+            popularMovies.innerHTML = `<div class="movie_error_handler">womp womp :(( No popular movies</div>`;
+        }
+    })
