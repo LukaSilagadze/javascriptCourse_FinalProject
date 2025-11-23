@@ -1,3 +1,20 @@
+const burgerBtn = document.querySelector('.burger_btn');
+const mobileNav = document.querySelector('.mobile_nav');
+
+burgerBtn.addEventListener('click', () => {
+    mobileNav.classList.toggle('open');
+});
+
+// optional: close menu when user clicks a link
+mobileNav.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+        mobileNav.classList.remove('open');
+    }
+});
+
+
+
+
 function loadMovies(movies) {
     const movieList = document.getElementById("movies_grid");
     const popularMovieList = document.getElementById("popular_movies")

@@ -1,0 +1,10 @@
+/* RESPONSIVE: show burger icon on mobile */
+@media (max-width: 768px) {
+    .header_nav {
+        display: none;
+    }
+
+    .burger_menu {
+        display: block;
+    }
+}
