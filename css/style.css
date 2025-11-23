@@ -915,6 +915,13 @@ footer{
     margin-bottom: 28px;
 }
 
+.sign_up_instruct{
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 12px;
+    color: #cbcaca;
+}
+
 .signin_form {
     display: flex;
     flex-direction: column;
@@ -969,4 +976,11 @@ footer{
 
 .signin_link:hover {
     text-decoration: underline;
+}
+.error_message{
+    color: red;
+    font-family: Inter;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: left;
 }

@@ -1,4 +1,5 @@
-function loadMovies(movies) {
+// load movies
+function loadMovies(movies){
     const movieList = document.getElementById("movies_grid");
     const popularMovieList = document.getElementById("popular_movies")
     movieList.innerHTML = "";
@@ -27,7 +28,8 @@ function loadMovies(movies) {
     });
 }
 
-function searchMovies() {
+// search movies
+function searchMovies(){
     let input, filter, cards_container, card, txtValue;
 
     input = document.getElementById("search_input");
@@ -49,11 +51,143 @@ function filterMovies() {
 
 }
 
+function getUsers(){
+    const users = localStorage.getItem("users");
+    return users ? JSON.parse(users) : {};
+}
+function saveUsers(users){
+    localStorage.setItem("users", JSON.stringify(users))
+}
+
+// Sign Up
+function registerUser() {
+    const username = document.getElementById("username_signup").value.trim();
+    const email = document.getElementById("email_signup").value.trim();
+    const password = document.getElementById("password_signup").value;
+    let res = document.getElementById("res");
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+
+    const users = getUsers();
+
+    res.innerHTML = "";
+    
+    if(!username || !email || !password){
+        res.innerHTML += `<div class="error_message"> Please fill in all fields. </div>`;
+        return;
+    }
+        if (!emailRegex.test(email)) {
+        res.innerHTML += `<div class="error_message"> Please enter a valid email address. </div>`;
+        return;
+    }
+    if(password.length < 8 || password.length > 20){
+        res.innerHTML += `<div class="error_message"> Password must be 8-20 characters long! </div>`;
+        return;
+    }
+    if(!passwordRegex.test(password)) {
+        res.innerHTML += `<div class="error_message"> Password must contain at least one letter, one number, and one special character. </div>`;
+        return;
+    }
+    if(users[username]){
+        res.innerHTML += `<div class="error_message"> Username already taken. Please choose another one. </div>`;
+        return;
+    }
+    for(let user in users){
+        if(users[user].email === email){
+            res.innerHTML += `<div class="error_message"> An account with this email already exists. Please log in. </div>`;
+            return;
+        }
+    }
+    users[username] = {
+        password: password,
+        email: email
+    };
+    saveUsers(users);
+    
+    res.innerHTML = `<div class="error_message" style="color: green;"> Registration successful! You can sign in now. </div>`;
+
+    document.getElementById("username_signup").value = "";
+    document.getElementById("email_signup").value = "";
+    document.getElementById("password_signup").value = "";
+}
+
+// Log In
+function login(){
+    const username = document.getElementById("username_signin").value.trim();
+    const password = document.getElementById("password_signin").value;
+    const res = document.getElementById("res");
+    const logoutBtn = document.getElementById("logout_btn");
+    const loginBtn = document.getElementById("login_btn");
+
+    const users = getUsers();
+
+    res.innerHTML = "";
+    
+    if(!username || !password){
+        res.innerHTML += `<div class="error_message"> Please enter both username and password. </div>`;
+        return;
+    }
+    if(!users[username]){
+        res.innerHTML += `<div class="error_message"> User not found. Please check your username. </div>`;
+        return;
+    }
+    if(users[username].password !== password){
+        res.innerHTML += `<div class="error_message"> Incorrect password. Please try again. </div>`;
+        return;
+    }
+    
+    // Login successful
+    sessionStorage.setItem("currentUser", username);
+    
+    if(logoutBtn){
+        logoutBtn.style.display = "inline-block";
+        loginBtn.style.display = "none";
+    }
+    
+    res.innerHTML = `<div class="error_message" style="color: green;"> Logged in successfully! Redirecting... </div>`;
+    
+    // Clear form fields
+    document.getElementById("username_signin").value = "";
+    document.getElementById("password_signin").value = "";
+    
+    // Redirect to home page after successful login
+    setTimeout(() => {
+        window.location.href = "./index.html";
+    }, 1500);
+}
+// Log in / Sign up
+
+document.addEventListener('DOMContentLoaded', () => {
+    const signupForm = document.getElementById("signup_form");
+    const signinForm = document.getElementById("signin_form");
+    const logoutBtn = document.getElementById("logout_btn");
+
+    if(signupForm){
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            registerUser();
+        });
+    }
+    if(signinForm){
+        signinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            login();
+        });
+    }
+    if(logoutBtn){
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem("currentUser");
+            alert("Logged out.");
+        });
+    }
+});
+
+
 fetch("movies.json")
     .then(res => res.json())
     .then(movies => {
         allMovies = movies;
         loadMovies(movies)
     })
-    .catch(error => alert("Movies couldn't load."))
-
+    // .catch(error => alert("Movies couldn't load."))

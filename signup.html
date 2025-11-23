@@ -32,12 +32,15 @@
         <div class="signin_box">
             <h2 class="signin_title">Sign Up</h2>
 
-            <form action="#" method="post" class="signin_form">
-                <input type="email" placeholder="Email" class="signin_input" required>
-                <input type="password" placeholder="Password" class="signin_input" required>
-                <button type="submit" class="signin_btn">Sign Up</button>
+            <form class="signin_form" id="signup_form">
+                <p class="sign_up_instruct">Password must contain a number and a special character.</p>
+                <p class="sign_up_instruct">Password length should be 8-20.</p>
+                <input type="text" placeholder="Username" class="signin_input" id="username_signup" required>
+                <input type="email" placeholder="Email" class="signin_input" id="email_signup" required>
+                <input type="password" placeholder="Password" class="signin_input" id="password_signup" required>
+                <button type="submit" class="signin_btn" id="regBtn">Sign Up</button>
             </form>
-
+            <div id="res" style="color:red; margin-top:5px;"></div>
             <p class="signin_text">
                 Already have an account? <a href="./signin.html" class="signin_link">Sign in!</a>
             </p>
@@ -54,5 +57,6 @@
         </ul>
     </footer>
 
+    <script src="./script.js"></script>
 </body>
 </html>

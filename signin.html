@@ -31,14 +31,15 @@
         <div class="signin_box">
             <h2 class="signin_title">Sign In</h2>
 
-            <form action="#" method="post" class="signin_form">
-                <input type="email" placeholder="Email" class="signin_input" required>
-                <input type="password" placeholder="Password" class="signin_input" required>
+            <form class="signin_form" id="signin_form">
+                <input type="text" placeholder="Username" class="signin_input" id="username_signin" required>
+                <input type="password" placeholder="Password" class="signin_input" id="password_signin" required>
                 <button type="submit" class="signin_btn">Log In</button>
             </form>
+            <div id="res" style="color:red; margin-top:5px;"></div>
 
             <p class="signin_text">
-                Don’t have an account? <a href="./signup.html" class="signin_link">Sign Up!</a>
+                Don't have an account? <a href="./signup.html" class="signin_link">Sign Up!</a>
             </p>
         </div>
     </main>
@@ -53,5 +54,6 @@
         </ul>
     </footer>
 
+    <script src="./script.js"></script>
 </body>
 </html>
