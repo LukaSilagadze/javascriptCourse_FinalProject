@@ -46,11 +46,12 @@ function searchMovies(){
     }
 }
 
-
+// filter moives
 function filterMovies() {
 
 }
 
+// USER REGISTRATION
 function getUsers(){
     const users = localStorage.getItem("users");
     return users ? JSON.parse(users) : {};
@@ -58,9 +59,8 @@ function getUsers(){
 function saveUsers(users){
     localStorage.setItem("users", JSON.stringify(users))
 }
-
 // Sign Up
-function registerUser() {
+function registerUser(){
     const username = document.getElementById("username_signup").value.trim();
     const email = document.getElementById("email_signup").value.trim();
     const password = document.getElementById("password_signup").value;
@@ -77,7 +77,7 @@ function registerUser() {
         res.innerHTML += `<div class="error_message"> Please fill in all fields. </div>`;
         return;
     }
-        if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email)){
         res.innerHTML += `<div class="error_message"> Please enter a valid email address. </div>`;
         return;
     }
@@ -85,7 +85,7 @@ function registerUser() {
         res.innerHTML += `<div class="error_message"> Password must be 8-20 characters long! </div>`;
         return;
     }
-    if(!passwordRegex.test(password)) {
+    if(!passwordRegex.test(password)){
         res.innerHTML += `<div class="error_message"> Password must contain at least one letter, one number, and one special character. </div>`;
         return;
     }
@@ -117,8 +117,6 @@ function login(){
     const username = document.getElementById("username_signin").value.trim();
     const password = document.getElementById("password_signin").value;
     const res = document.getElementById("res");
-    const logoutBtn = document.getElementById("logout_btn");
-    const loginBtn = document.getElementById("login_btn");
 
     const users = getUsers();
 
@@ -129,56 +127,95 @@ function login(){
         return;
     }
     if(!users[username]){
-        res.innerHTML += `<div class="error_message"> User not found. Please check your username. </div>`;
+        res.innerHTML += `<div class="error_message"> User not found. </div>`;
         return;
     }
     if(users[username].password !== password){
-        res.innerHTML += `<div class="error_message"> Incorrect password. Please try again. </div>`;
+        res.innerHTML += `<div class="error_message"> Incorrect password. </div>`;
         return;
     }
-    
-    // Login successful
+
     sessionStorage.setItem("currentUser", username);
-    
-    if(logoutBtn){
-        logoutBtn.style.display = "inline-block";
-        loginBtn.style.display = "none";
-    }
     
     res.innerHTML = `<div class="error_message" style="color: green;"> Logged in successfully! Redirecting... </div>`;
     
-    // Clear form fields
     document.getElementById("username_signin").value = "";
     document.getElementById("password_signin").value = "";
     
-    // Redirect to home page after successful login
-    setTimeout(() => {
-        window.location.href = "./index.html";
-    }, 1500);
+    window.location.href = "./index.html";
 }
-// Log in / Sign up
+
+function updateProfileButtonVisibility(){
+    const profileBtn = document.getElementById("profile_btn");
+    const loginBtn = document.getElementById("login_btn");
+    const currentUser = sessionStorage.getItem("currentUser");
+    
+    if(profileBtn){
+        profileBtn.style.display = currentUser ? "flex" : "none";
+    }
+    if(loginBtn){
+        loginBtn.style.display = currentUser ? "none" : "inline-block";
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById("signup_form");
     const signinForm = document.getElementById("signin_form");
-    const logoutBtn = document.getElementById("logout_btn");
+    const profileBtn = document.getElementById("profile_btn");
+    const profilePanel = document.getElementById("profile_panel");
+    const logoutPanelBtn = document.getElementById("logout_panel_btn");
+    const deleteAccountBtn = document.getElementById("delete_account_btn");
+    const profileUsername = document.getElementById("profile_username");
 
+    updateProfileButtonVisibility();
+
+    // Profile button click handler
+    if(profileBtn && profilePanel){
+        profileBtn.addEventListener('click', () => {
+            const currentUser = sessionStorage.getItem("currentUser");
+            if(currentUser && profileUsername){
+                profileUsername.textContent = currentUser;
+            }
+            profilePanel.classList.toggle('active');
+        });
+    }
+    // Log out
+    if(logoutPanelBtn){
+        logoutPanelBtn.addEventListener('click', () => {
+            sessionStorage.removeItem("currentUser");
+            if(profilePanel){
+                profilePanel.classList.remove('active');
+            }
+            updateProfileButtonVisibility();
+            alert("Logged out successfully.");
+            window.location.reload();
+        });
+    }
+    // Delete account
+    if(deleteAccountBtn){
+        deleteAccountBtn.addEventListener('click', () => {
+            const currentUser = sessionStorage.getItem("currentUser");
+            const users = getUsers();
+            delete users[currentUser];
+            saveUsers(users);
+            sessionStorage.removeItem("currentUser");
+            updateProfileButtonVisibility();
+            alert("Account deleted successfully.");
+            window.location.reload();
+        });
+    }
+    // Sign in
     if(signupForm){
         signupForm.addEventListener('submit', (e) => {
             e.preventDefault();
             registerUser();
         });
     }
+    // Sign up
     if(signinForm){
         signinForm.addEventListener('submit', (e) => {
             e.preventDefault();
             login();
-        });
-    }
-    if(logoutBtn){
-        logoutBtn.addEventListener('click', () => {
-            sessionStorage.removeItem("currentUser");
-            alert("Logged out.");
         });
     }
 });
