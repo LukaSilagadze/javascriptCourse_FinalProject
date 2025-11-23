@@ -1,30 +1,37 @@
 // Auto Slider
-let slideIndex = 1;
-autoSlider();
+let slideIndex = 0;
+
 function autoSlider() {
-    let slides = document.getElementsByClassName("myPictures");
-    let dots = document.getElementsByClassName("dot");
-    let i;
-
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
+    let slides = document.getElementsByClassName("bg_posters");
+    // Check if slides exist
+    if (slides.length === 0) {
+        return; // Exit if DOM not ready
     }
-
-    for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" activeDot", "")
+    // Hide all slides
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.remove("active");
     }
-
     slideIndex = slideIndex + 1;
-
+    
     if (slideIndex > slides.length) {
         slideIndex = 1;
-    };
-
-    slides[slideIndex-1].style.display = "block";
-    dots[slideIndex-1].className += " activeDot";
-
-    setTimeout(autoSlider, 2000); // ფუნქციის რეკურსიული გამოძახება
+    }
+    if (slides[slideIndex - 1]) {
+        slides[slideIndex - 1].classList.add("active");
+    }
+    setTimeout(autoSlider, 3000);
 }
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    let slides = document.getElementsByClassName("bg_posters");
+    if (slides.length > 0) {
+        slides[0].classList.add("active");
+        slideIndex = 0;
+    }
+    setTimeout(autoSlider, 3000);
+});
+
 // load movies
 function loadMovies(movies){
     const movieList = document.getElementById("movies_grid");
