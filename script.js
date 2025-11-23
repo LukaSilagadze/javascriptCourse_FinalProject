@@ -1,13 +1,7 @@
 // Auto Slider
 let slideIndex = 0;
-
 function autoSlider() {
     let slides = document.getElementsByClassName("bg_posters");
-    // Check if slides exist
-    if (slides.length === 0) {
-        return; // Exit if DOM not ready
-    }
-    // Hide all slides
     for (let i = 0; i < slides.length; i++) {
         slides[i].classList.remove("active");
     }
@@ -21,16 +15,6 @@ function autoSlider() {
     }
     setTimeout(autoSlider, 3000);
 }
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    let slides = document.getElementsByClassName("bg_posters");
-    if (slides.length > 0) {
-        slides[0].classList.add("active");
-        slideIndex = 0;
-    }
-    setTimeout(autoSlider, 3000);
-});
 
 // load movies
 function loadMovies(movies){
@@ -200,7 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutPanelBtn = document.getElementById("logout_panel_btn");
     const deleteAccountBtn = document.getElementById("delete_account_btn");
     const profileUsername = document.getElementById("profile_username");
+    let slides = document.getElementsByClassName("bg_posters");
 
+    // autoSlider
+    if (slides.length > 0) {
+        slides[0].classList.add("active");
+        slideIndex = 0;
+    }
+    setTimeout(autoSlider, 3000);
     updateProfileButtonVisibility();
 
     // Profile button click handler

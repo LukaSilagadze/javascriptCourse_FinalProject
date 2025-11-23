@@ -97,7 +97,7 @@ header{
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    z-index: 1;
+    z-index: 99;
     overflow: hidden;
 }
 .profile_panel.active{
@@ -662,26 +662,26 @@ footer{
 /* About us */
 .main_section_aboutUs{
     background-color: #020617;
+    background-image: url(../images/IMAGE.png);
     width: 100%;
     min-height: calc(100vh - 128px - 72px);
-    padding: 48px 24px 64px;
+    padding: 48px 300px 64px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    align-content: center;
     box-sizing: border-box;
 }
-.about_container{
-    width: 100%;
-    max-width: 1120px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 32px;
-}
+
 .about_content{
     display: flex;
     flex-direction: column;
     row-gap: 16px;
+    background-color: #1e293ba7;
+    border-radius: 12px;
+    border: 1px solid #374151;
+    padding: 40px;
+    border-radius: 50px;
 }
 .about_title{
     font-family: Inter;
