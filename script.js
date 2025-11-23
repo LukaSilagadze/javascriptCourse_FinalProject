@@ -1,23 +1,8 @@
-const burgerBtn = document.querySelector('.burger_btn');
-const mobileNav = document.querySelector('.mobile_nav');
-
-burgerBtn.addEventListener('click', () => {
-    mobileNav.classList.toggle('open');
-});
-
-// optional: close menu when user clicks a link
-mobileNav.addEventListener('click', (e) => {
-    if (e.target.tagName === 'A') {
-        mobileNav.classList.remove('open');
-    }
-});
-
-
-
-
 function loadMovies(movies) {
     const movieList = document.getElementById("movies_grid");
     const popularMovieList = document.getElementById("popular_movies")
+    movieList.innerHTML = "";
+    popularMovieList.innerHTML = "";
     movies.forEach(movie => {
         const card = document.createElement("article");
         card.className = "card";
@@ -29,7 +14,7 @@ function loadMovies(movies) {
         </div>`;
         movieList.appendChild(card);
     });
-    movies.forEach(movie => {
+    allMovies.forEach(movie => {
         const popularMovieCard = document.createElement("div");
         popularMovieCard.className = "popular_movie_card";
         popularMovieCard.innerHTML = `
@@ -42,9 +27,32 @@ function loadMovies(movies) {
     });
 }
 
+function searchMovies() {
+    let input, filter, cards_container, card, txtValue;
+
+    input = document.getElementById("search_input");
+    filter = input.value.toUpperCase();
+    cards_container = document.getElementById("movies_grid");
+    cards = cards_container.getElementsByClassName("card");
+    for(card of cards){
+        txtValue = card.querySelector("h1").textContent;
+        if(txtValue.toUpperCase().indexOf(filter) > -1){
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    }
+}
+
+
+function filterMovies() {
+
+}
+
 fetch("movies.json")
     .then(res => res.json())
     .then(movies => {
+        allMovies = movies;
         loadMovies(movies)
     })
     .catch(error => alert("Movies couldn't load."))

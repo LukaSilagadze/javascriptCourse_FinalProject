@@ -70,7 +70,7 @@
             </div>
                 <div class="filter-group">
                     <label for="year-min" class="filter_txt">Sort by</label><br>
-                    <select name="year" id="movie_year" class="movie_year_filter">
+                    <select name="year" id="year_filter" class="movie_year_filter">
                         <option value="all">Any Year</option>
                         <option value="2025">2025</option>
                         <option value="2024">2024</option>
@@ -112,16 +112,19 @@
                 </div>
                 <div class="filter-group">
                     <label for="year-min" class="filter_txt">Year</label><br>
-                    <select name="year" id="movie_year" class="movie_year_filter">
+                    <select name="year" id="sort_filter" class="movie_year_filter">
                         <option value="Popular">Popular</option>
                         <option value="Newest">Newest</option>
                         <option value="Oldest">Oldest</option>
                     </select>
                 </div>
-                <button id="apply-filters" class="apply_btn">Apply Filters</button>
+                <button id="apply-filters" class="apply_btn" onclick="filterMovies()">Apply Filters</button>
             </aside>
-            <div class="movies_grid" id="movies_grid">
-                <!-- Javascript -->
+            <div class="movies_container">
+                <input type="text" id="search_input" class="search_input" onkeyup="searchMovies()" placeholder="Search for movies...">
+                <div class="movies_grid" id="movies_grid">
+                    <!-- Javascript -->
+                </div>
             </div>
             <aside class="sidebar">
                 <h2>Most Popular</h2>
