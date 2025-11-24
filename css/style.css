@@ -194,6 +194,7 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 .slideshow-container{
     position: absolute;
@@ -291,7 +292,8 @@ header{
 }
 .search_container {
     position: relative;
-    width: 576px;
+    width: 100%;
+    max-width: 576px;
 }
 .search_icon {
     position: absolute;
@@ -685,16 +687,17 @@ footer{
     background-image: url(../images/IMAGE.png);
     width: 100%;
     min-height: calc(100vh - 128px - 72px);
-    padding: 48px 300px 64px;
+    padding: 48px 64px;
     display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
     box-sizing: border-box;
 }
-
 .about_content{
     display: flex;
+    width: 100%;
+    max-width: 1038px;
     flex-direction: column;
     row-gap: 16px;
     background-color: #1e293ba7;
@@ -769,56 +772,6 @@ footer{
     line-height: 22px;
     color: #9CA3AF;
 }
-/* Right side card on About page */
-.about_side{
-    display: flex;
-    align-items: stretch;
-}
-.about_side_card{
-    background-color: #1E293B;
-    border-radius: 12px;
-    padding: 24px 20px;
-    box-shadow: 0px 4px 6px 0px #0000001A;
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-}
-.about_side_title{
-    font-family: Inter;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 26px;
-    color: #FFFFFF;
-}
-.about_side_text{
-    font-family: Inter;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 24px;
-    color: #9CA3AF;
-}
-.about_list{
-    list-style: none;
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-    row-gap: 6px;
-    padding: 0;
-}
-.about_list li{
-    font-family: Inter;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 22px;
-    color: #E5E7EB;
-    display: flex;
-    align-items: center;
-    column-gap: 8px;
-}
-.about_list i{
-    color: #22C55E;
-    font-size: 14px;
-}
 
 /* CONTACT PAGE */
 
@@ -830,7 +783,6 @@ footer{
     background-size: cover;
     background-position: center;
 }
-
 /* container */
 .contact_section{
     display: flex;
@@ -842,7 +794,6 @@ footer{
     border: 1px solid #374151;
     width: min(100%, 1038px);
 }
-
 /* left form section */
 .contact_section_left{
     width: 100%;

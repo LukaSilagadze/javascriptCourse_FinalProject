@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/tablet.css">
     <link rel="shortcut icon" href="./images/icon.png" type="image/x-icon">
     <title>Sign In | FinalMovies</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,16 +16,33 @@
 <body>
     <!-- HEADER -->
     <header>
-        <a href="./index.html"><h1 class="header_h1">FinalMovies</h1></a>
-        <nav class="header_nav">
-            <ul class="header_ul">
-                <li><a href="./index.html" class="header_a">Home</a></li>
-                <li><a href="./movies.html" class="header_a">Movies</a></li>
-                <li><a href="./aboutus.html" class="header_a">About Us</a></li>
-                <li><a href="./contact.html" class="header_a">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+            <a href="./index.html" class="header_h1">FinalMovies</a>
+
+            <div class="header_rightside">
+                <nav class="header_nav">
+                    <ul class="header_ul">
+                        <li><a href="./index.html" class="header_a active">Home</a></li>
+                        <li><a href="./movies.html" class="header_a">Movies</a></li>
+                        <li><a href="./aboutus.html" class="header_a">About Us</a></li>
+                        <li><a href="./contact.html" class="header_a">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <button class="burger" id="burger"><i class="fa-solid fa-bars burger"></i></button>
+                <button class="xmark" id="xmark"><i class="fa-solid fa-xmark xmark"></i></button>
+
+                <div class="profile_container">
+                    <button class="profile_btn" id="profile_btn"><i class="fa-solid fa-user"></i></button>
+                    <div class="profile_panel" id="profile_panel">
+                        <div class="profile_panel_content">
+                            <p class="profile_user_text" id="profile_user_text">Logged in as: <span id="profile_username"></span></p>
+                            <button class="profile_panel_btn" id="logout_panel_btn">Log Out</button>
+                            <button class="profile_panel_btn profile_panel_btn_delet_acc" id="delete_account_btn">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
 
     <!-- MAIN SIGN IN FORM -->
     <main class="signin_main">
