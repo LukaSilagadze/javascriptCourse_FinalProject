@@ -1,3 +1,70 @@
+// Movie Manager class
+class MovieManager {
+    constructor(){
+        this.allMovies = [];
+    }
+    loadMovies(movies){
+        this.allMovies = movies;
+        const movieList = document.getElementById("movies_grid");
+        const popularMovieList = document.getElementById("popular_movies");
+        movieList.innerHTML = "";
+        popularMovieList.innerHTML = "";
+        movies.forEach(movie => this.createMovieCard(movie, movieList));
+        this.allMovies.forEach(movie => this.createPopularCard(movie, popularMovieList))
+    }
+    createMovieCard(movie, container){
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+        <img src="${movie.image_url}" alt="${movie.name}" class="movie_img">
+        <div class="card_content">
+            <h1 class="movie_name">${movie.name}</h1>
+            <p class="movie_year">${movie.year}</p>
+        </div>`;
+        container.appendChild(card);
+    }
+    createPopularCard(movie, container){
+        const popularMovieCard = document.createElement("div");
+        popularMovieCard.className = "popular_movie_card";
+        popularMovieCard.innerHTML = `
+        <img src="${movie.image_url}" alt="${movie.name}" class="popular_movie_img">
+        <div class="popular_card_content">
+            <h1 class="popular_movie_name">${movie.name}</h1>
+            <p class="popular_movie_year">${movie.year}</p>
+        </div>`;
+        container.appendChild(popularMovieCard);
+    }
+    searchMovies(){
+        let input, filter, cards_container, card, txtValue;
+
+        input = document.getElementById("search_input");
+        filter = input.value.toUpperCase();
+        cards_container = document.getElementById("movies_grid");
+        cards = cards_container.getElementsByClassName("card");
+        for(card of cards){
+            txtValue = card.querySelector("h1").textContent;
+            if(txtValue.toUpperCase().indexOf(filter) > -1){
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+        }
+    }
+    showError(){
+        const moviesGrid = document.getElementById("movies_grid");
+        const popularMovies = document.getElementById("popular_movies");
+        if(moviesGrid){
+            moviesGrid.style.display = "flex";
+            moviesGrid.style.justifyContent = "center";
+            moviesGrid.style.alignItems = "center";
+            moviesGrid.innerHTML = `<div class="movie_error_handler"> Movies couldn't load :((( womp womp</div>`;
+        }
+        if(popularMovies){
+            popularMovies.innerHTML = `<div class="movie_error_handler">womp womp :(( No popular movies</div>`;
+        }
+    }
+}
+const movieManager = new MovieManager();
 // Auto Slider
 let slideIndex = 0;
 function autoSlider() {
@@ -14,59 +81,6 @@ function autoSlider() {
         slides[slideIndex - 1].classList.add("active");
     }
     setTimeout(autoSlider, 3000);
-}
-
-// load movies
-function loadMovies(movies){
-    const movieList = document.getElementById("movies_grid");
-    const popularMovieList = document.getElementById("popular_movies")
-    movieList.innerHTML = "";
-    popularMovieList.innerHTML = "";
-    movies.forEach(movie => {
-        const card = document.createElement("article");
-        card.className = "card";
-        card.innerHTML = `
-        <img src="${movie.image_url}" alt="${movie.name}" class="movie_img">
-        <div class="card_content">
-            <h1 class="movie_name">${movie.name}</h1>
-            <p class="movie_year">${movie.year}</p>
-        </div>`;
-        movieList.appendChild(card);
-    });
-    allMovies.forEach(movie => {
-        const popularMovieCard = document.createElement("div");
-        popularMovieCard.className = "popular_movie_card";
-        popularMovieCard.innerHTML = `
-        <img src="${movie.image_url}" alt="${movie.name}" class="popular_movie_img">
-        <div class="popular_card_content">
-            <h1 class="popular_movie_name">${movie.name}</h1>
-            <p class="popular_movie_year">${movie.year}</p>
-        </div>`;
-        popularMovieList.appendChild(popularMovieCard);
-    });
-}
-
-// search movies
-function searchMovies(){
-    let input, filter, cards_container, card, txtValue;
-
-    input = document.getElementById("search_input");
-    filter = input.value.toUpperCase();
-    cards_container = document.getElementById("movies_grid");
-    cards = cards_container.getElementsByClassName("card");
-    for(card of cards){
-        txtValue = card.querySelector("h1").textContent;
-        if(txtValue.toUpperCase().indexOf(filter) > -1){
-            card.style.display = "";
-        } else {
-            card.style.display = "none";
-        }
-    }
-}
-
-// filter moives
-function filterMovies() {
-
 }
 
 // USER REGISTRATION
@@ -184,7 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutPanelBtn = document.getElementById("logout_panel_btn");
     const deleteAccountBtn = document.getElementById("delete_account_btn");
     const profileUsername = document.getElementById("profile_username");
+    const searchInput = document.getElementById("search_input");
     let slides = document.getElementsByClassName("bg_posters");
+
+    // search bar
+    if(searchInput){
+        searchInput.addEventListener('keyup', () => {
+            movieManager.searchMovies();
+        });
+    }
 
     // autoSlider
     if (slides.length > 0) {
@@ -202,6 +224,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 profileUsername.textContent = currentUser;
             }
             profilePanel.classList.toggle('active');
+        });
+    }
+    // Sign in
+    if(signupForm){
+        signupForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            registerUser();
+        });
+    }
+    // Sign up
+    if(signinForm){
+        signinForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            login();
         });
     }
     // Log out
@@ -229,20 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.reload();
         });
     }
-    // Sign in
-    if(signupForm){
-        signupForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            registerUser();
-        });
-    }
-    // Sign up
-    if(signinForm){
-        signinForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            login();
-        });
-    }
 });
 
 
@@ -250,18 +272,8 @@ fetch("movies.json")
     .then(res => res.json())
     .then(movies => {
         allMovies = movies;
-        loadMovies(movies)
+        movieManager.loadMovies(movies);
     })
     .catch(error => {
-        const moviesGrid = document.getElementById("movies_grid");
-        const popularMovies = document.getElementById("popular_movies");
-        if(moviesGrid){
-            moviesGrid.style.display = "flex";
-            moviesGrid.style.justifyContent = "center";
-            moviesGrid.style.alignItems = "center";
-            moviesGrid.innerHTML = `<div class="movie_error_handler"> Movies couldn't load :((( womp womp</div>`;
-        }
-        if(popularMovies){
-            popularMovies.innerHTML = `<div class="movie_error_handler">womp womp :(( No popular movies</div>`;
-        }
+        movieManager.showError();
     })
