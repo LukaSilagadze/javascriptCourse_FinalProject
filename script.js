@@ -35,7 +35,7 @@ class MovieManager {
         container.appendChild(popularMovieCard);
     }
     searchMovies(){
-        let input, filter, cards_container, card, txtValue;
+        let input, filter, cards_container, card, cards, txtValue;
 
         input = document.getElementById("search_input");
         filter = input.value.toUpperCase();
@@ -48,6 +48,17 @@ class MovieManager {
             } else {
                 card.style.display = "none";
             }
+        }
+    }
+    searchMoviesHomePage(){
+        const saved = sessionStorage.getItem("searchQuery");
+        if (saved) {
+            const searchEl = document.getElementById('search_input');
+            if (searchEl) {
+                searchEl.value = saved;
+                movieManager.searchMovies();
+            }
+            sessionStorage.removeItem("searchQuery");
         }
     }
     showError(){
@@ -176,7 +187,7 @@ function login(){
     
     window.location.href = "./index.html";
 }
-
+// Update profile button visibility
 function updateProfileButtonVisibility(){
     const profileBtn = document.getElementById("profile_btn");
     const loginBtn = document.getElementById("login_btn");
@@ -191,6 +202,7 @@ function updateProfileButtonVisibility(){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const homePageInputBar = document.getElementById("homepage_input_bar");
     const signupForm = document.getElementById("signup_form");
     const signinForm = document.getElementById("signin_form");
     const profileBtn = document.getElementById("profile_btn");
@@ -199,8 +211,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteAccountBtn = document.getElementById("delete_account_btn");
     const profileUsername = document.getElementById("profile_username");
     const searchInput = document.getElementById("search_input");
-    let slides = document.getElementsByClassName("bg_posters");
+    const slides = document.getElementsByClassName("bg_posters");
+    const burger = document.getElementById("burger");
+    const xmark = document.getElementById("xmark");
+    const menu_nav = document.querySelector(".header_nav");
 
+    // burger menu
+    if (burger && xmark && menu_nav){
+        burger.addEventListener("click", () => {
+            menu_nav.classList.add('open');
+            burger.style.display = 'none';
+            xmark.style.display = 'block';
+        });
+        xmark.addEventListener("click", () => {
+            menu_nav.classList.remove('open');
+            xmark.style.display = 'none';
+            burger.style.display = 'block';
+        });
+    }
+
+    // homepage search bar
+    if(homePageInputBar){
+        homePageInputBar.addEventListener('keydown', (key) => {
+            if (key.key === 'Enter') {
+                key.preventDefault();
+                const inputValue = homePageInputBar.value.trim();
+                sessionStorage.setItem("searchQuery", inputValue);
+                window.location.href = "./movies.html";
+            }
+        });
+    }
     // search bar
     if(searchInput){
         searchInput.addEventListener('keyup', () => {
@@ -216,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(autoSlider, 3000);
     updateProfileButtonVisibility();
 
-    // Profile button click handler
+    // Profile button
     if(profileBtn && profilePanel){
         profileBtn.addEventListener('click', () => {
             const currentUser = sessionStorage.getItem("currentUser");
@@ -273,6 +313,7 @@ fetch("movies.json")
     .then(movies => {
         allMovies = movies;
         movieManager.loadMovies(movies);
+        movieManager.searchMoviesHomePage();
     })
     .catch(error => {
         movieManager.showError();
