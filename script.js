@@ -246,16 +246,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (key.key === 'Enter') {
                 key.preventDefault();
                 const inputValue = homePageInputBar.value.trim();
+                if(inputValue === "") return;
                 sessionStorage.setItem("searchQuery", inputValue);
                 window.location.href = "./movies.html";
             }
         });
-        searchBtn.addEventListener('click', () => {
-            const inputValue = homePageInputBar.value.trim();
-            sessionStorage.setItem("searchQuery", inputValue);
-            window.location.href = "./movies.html";
-        });
-    }
+        if(searchBtn){
+            searchBtn.addEventListener('click', () => {
+                const inputValue = homePageInputBar.value.trim();
+                if(inputValue === "") return;
+                sessionStorage.setItem("searchQuery", inputValue);
+                window.location.href = "./movies.html";
+                console.log(`input value: ${inputValue}`)
+            }); 
+        };    
+}
     // search bar
     if(searchInput){
         searchInput.addEventListener('keyup', () => {
