@@ -54,9 +54,9 @@ class MovieManager {
     searchMoviesHomePage(){
         const saved = sessionStorage.getItem("searchQuery");
         if (saved) {
-            const searchEl = document.getElementById('search_input');
-            if (searchEl) {
-                searchEl.value = saved;
+            const search = document.getElementById('search_input');
+            if (search) {
+                search.value = saved;
                 movieManager.searchMovies();
             }
             sessionStorage.removeItem("searchQuery");
@@ -77,6 +77,118 @@ class MovieManager {
     }
 }
 const movieManager = new MovieManager();
+
+
+// User Manager class
+class UserManager {
+    constructor(){
+
+    }
+    getUsers(){
+        const users = localStorage.getItem("users");
+        return users ? JSON.parse(users) : {};
+    }
+    saveUsers(users){
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+    registerUser(){
+        const username = document.getElementById("username_signup").value.trim();
+        const email = document.getElementById("email_signup").value.trim();
+        const password = document.getElementById("password_signup").value;
+        let res = document.getElementById("res");
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+
+        const users = this.getUsers();
+
+        res.innerHTML = "";
+        
+        if(!username || !email || !password){
+            res.innerHTML += `<div class="error_message"> Please fill in all fields. </div>`;
+            return;
+        }
+        if (!emailRegex.test(email)){
+            res.innerHTML += `<div class="error_message"> Please enter a valid email address. </div>`;
+            return;
+        }
+        if(password.length < 8 || password.length > 20){
+            res.innerHTML += `<div class="error_message"> Password must be 8-20 characters long! </div>`;
+            return;
+        }
+        if(!passwordRegex.test(password)){
+            res.innerHTML += `<div class="error_message"> Password must contain at least one letter, one number, and one special character. </div>`;
+            return;
+        }
+        if(users[username]){
+            res.innerHTML += `<div class="error_message"> Username already taken. Please choose another one. </div>`;
+            return;
+        }
+        for(let user in users){
+            if(users[user].email === email){
+                res.innerHTML += `<div class="error_message"> An account with this email already exists. Please log in. </div>`;
+                return;
+            }
+        }
+        users[username] = {
+            password: password,
+            email: email
+        };
+        this.saveUsers(users);
+        
+        res.innerHTML = `<div class="error_message" style="color: green;"> Registration successful! You can sign in now. </div>`;
+
+        document.getElementById("username_signup").value = "";
+        document.getElementById("email_signup").value = "";
+        document.getElementById("password_signup").value = "";
+    }
+    login(){
+        const username = document.getElementById("username_signin").value.trim();
+        const password = document.getElementById("password_signin").value;
+        const res = document.getElementById("res");
+
+        const users = this.getUsers();
+
+        res.innerHTML = "";
+        
+        if(!username || !password){
+            res.innerHTML += `<div class="error_message"> Please enter both username and password. </div>`;
+            return;
+        }
+        if(!users[username]){
+            res.innerHTML += `<div class="error_message"> User not found. </div>`;
+            return;
+        }
+        if(users[username].password !== password){
+            res.innerHTML += `<div class="error_message"> Incorrect password. </div>`;
+            return;
+        }
+
+        sessionStorage.setItem("currentUser", username);
+        
+        res.innerHTML = `<div class="error_message" style="color: green;"> Logged in successfully! Redirecting... </div>`;
+        
+        document.getElementById("username_signin").value = "";
+        document.getElementById("password_signin").value = "";
+        
+        window.location.href = "./index.html";
+    }
+    updateProfileButtonVisibility(){
+        const profileBtn = document.getElementById("profile_btn");
+        const loginBtn = document.getElementById("login_btn");
+        const currentUser = sessionStorage.getItem("currentUser");
+        
+        if(profileBtn){
+            profileBtn.style.display = currentUser ? "flex" : "none";
+        }
+        if(loginBtn){
+            loginBtn.style.display = currentUser ? "none" : "inline-block";
+        }
+    }
+}
+const userManager = new UserManager();
+
+
 // Auto Slider
 let slideIndex = 0;
 function autoSlider() {
@@ -95,115 +207,11 @@ function autoSlider() {
     setTimeout(autoSlider, 3000);
 }
 
-// USER REGISTRATION
-function getUsers(){
-    const users = localStorage.getItem("users");
-    return users ? JSON.parse(users) : {};
-}
-function saveUsers(users){
-    localStorage.setItem("users", JSON.stringify(users))
-}
-// Sign Up
-function registerUser(){
-    const username = document.getElementById("username_signup").value.trim();
-    const email = document.getElementById("email_signup").value.trim();
-    const password = document.getElementById("password_signup").value;
-    let res = document.getElementById("res");
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
-
-    const users = getUsers();
-
-    res.innerHTML = "";
-    
-    if(!username || !email || !password){
-        res.innerHTML += `<div class="error_message"> Please fill in all fields. </div>`;
-        return;
-    }
-    if (!emailRegex.test(email)){
-        res.innerHTML += `<div class="error_message"> Please enter a valid email address. </div>`;
-        return;
-    }
-    if(password.length < 8 || password.length > 20){
-        res.innerHTML += `<div class="error_message"> Password must be 8-20 characters long! </div>`;
-        return;
-    }
-    if(!passwordRegex.test(password)){
-        res.innerHTML += `<div class="error_message"> Password must contain at least one letter, one number, and one special character. </div>`;
-        return;
-    }
-    if(users[username]){
-        res.innerHTML += `<div class="error_message"> Username already taken. Please choose another one. </div>`;
-        return;
-    }
-    for(let user in users){
-        if(users[user].email === email){
-            res.innerHTML += `<div class="error_message"> An account with this email already exists. Please log in. </div>`;
-            return;
-        }
-    }
-    users[username] = {
-        password: password,
-        email: email
-    };
-    saveUsers(users);
-    
-    res.innerHTML = `<div class="error_message" style="color: green;"> Registration successful! You can sign in now. </div>`;
-
-    document.getElementById("username_signup").value = "";
-    document.getElementById("email_signup").value = "";
-    document.getElementById("password_signup").value = "";
-}
-
-// Log In
-function login(){
-    const username = document.getElementById("username_signin").value.trim();
-    const password = document.getElementById("password_signin").value;
-    const res = document.getElementById("res");
-
-    const users = getUsers();
-
-    res.innerHTML = "";
-    
-    if(!username || !password){
-        res.innerHTML += `<div class="error_message"> Please enter both username and password. </div>`;
-        return;
-    }
-    if(!users[username]){
-        res.innerHTML += `<div class="error_message"> User not found. </div>`;
-        return;
-    }
-    if(users[username].password !== password){
-        res.innerHTML += `<div class="error_message"> Incorrect password. </div>`;
-        return;
-    }
-
-    sessionStorage.setItem("currentUser", username);
-    
-    res.innerHTML = `<div class="error_message" style="color: green;"> Logged in successfully! Redirecting... </div>`;
-    
-    document.getElementById("username_signin").value = "";
-    document.getElementById("password_signin").value = "";
-    
-    window.location.href = "./index.html";
-}
-// Update profile button visibility
-function updateProfileButtonVisibility(){
-    const profileBtn = document.getElementById("profile_btn");
-    const loginBtn = document.getElementById("login_btn");
-    const currentUser = sessionStorage.getItem("currentUser");
-    
-    if(profileBtn){
-        profileBtn.style.display = currentUser ? "flex" : "none";
-    }
-    if(loginBtn){
-        loginBtn.style.display = currentUser ? "none" : "inline-block";
-    }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const homePageInputBar = document.getElementById("homepage_input_bar");
+    const searchBtn = document.getElementById("search_btn");
     const signupForm = document.getElementById("signup_form");
     const signinForm = document.getElementById("signin_form");
     const profileBtn = document.getElementById("profile_btn");
@@ -216,6 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const burger = document.getElementById("burger");
     const xmark = document.getElementById("xmark");
     const menu_nav = document.querySelector(".header_nav");
+
+    userManager.updateProfileButtonVisibility();
 
     // burger menu
     if (burger && xmark && menu_nav){
@@ -230,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
             burger.style.display = 'block';
         });
     }
-
     // homepage search bar
     if(homePageInputBar){
         homePageInputBar.addEventListener('keydown', (key) => {
@@ -241,6 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = "./movies.html";
             }
         });
+        searchBtn.addEventListener('click', () => {
+            const inputValue = homePageInputBar.value.trim();
+            sessionStorage.setItem("searchQuery", inputValue);
+            window.location.href = "./movies.html";
+        });
     }
     // search bar
     if(searchInput){
@@ -248,15 +262,12 @@ document.addEventListener('DOMContentLoaded', () => {
             movieManager.searchMovies();
         });
     }
-
     // autoSlider
     if (slides.length > 0) {
         slides[0].classList.add("active");
         slideIndex = 0;
     }
     setTimeout(autoSlider, 3000);
-    updateProfileButtonVisibility();
-
     // Profile button
     if(profileBtn && profilePanel){
         profileBtn.addEventListener('click', () => {
@@ -271,14 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if(signupForm){
         signupForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            registerUser();
+            userManager.registerUser();
         });
     }
     // Sign up
     if(signinForm){
         signinForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            login();
+            userManager.login();
         });
     }
     // Log out
@@ -288,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(profilePanel){
                 profilePanel.classList.remove('active');
             }
-            updateProfileButtonVisibility();
+            userManager.updateProfileButtonVisibility();
             alert("Logged out successfully.");
             window.location.reload();
         });
@@ -297,11 +308,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if(deleteAccountBtn){
         deleteAccountBtn.addEventListener('click', () => {
             const currentUser = sessionStorage.getItem("currentUser");
-            const users = getUsers();
+            const users = userManager.getUsers();
             delete users[currentUser];
-            saveUsers(users);
+            userManager.saveUsers(users);
             sessionStorage.removeItem("currentUser");
-            updateProfileButtonVisibility();
+            userManager.updateProfileButtonVisibility();
             alert("Account deleted successfully.");
             window.location.reload();
         });
