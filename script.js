@@ -36,7 +36,6 @@ class MovieManager {
     }
     searchMovies(){
         let input, filter, cards_container, card, cards, txtValue;
-        const moviesGrid = document.getElementById("movies_grid");
 
         input = document.getElementById("search_input");
         filter = input.value.toUpperCase();
@@ -45,13 +44,10 @@ class MovieManager {
         for(card of cards){
             txtValue = card.querySelector("h1").textContent;
             if(txtValue.toUpperCase().indexOf(filter) > -1){
-                card.style.display = "";
-            } else {
+                card.style.display = "inline-block";
+            }
+            else {
                 card.style.display = "none";
-                moviesGrid.style.display = "flex";
-                moviesGrid.style.justifyContent = "center";
-                moviesGrid.style.alignItems = "center";
-                moviesGrid.innerHTML = `<div class="movie_error_handler"> Couldn't find movies.. :((</div>`;
             }
         }
     }
