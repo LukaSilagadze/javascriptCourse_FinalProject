@@ -166,7 +166,7 @@ class UserManager {
 
         sessionStorage.setItem("currentUser", username);
         
-        res.innerHTML = `<div class="error_message" style="color: green;"> Logged in successfully! Redirecting... </div>`;
+        res.innerHTML = `<div class="error_message" style="color: green;"> Logged in successfully!</div>`;
         
         document.getElementById("username_signin").value = "";
         document.getElementById("password_signin").value = "";
